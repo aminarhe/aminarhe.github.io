@@ -1,0 +1,41 @@
+---
+import Prompt from './Prompt.astro';
+import PhotoSlot from './PhotoSlot.astro';
+import { site } from '../data/site';
+import { heroPhotos } from '../lib/photos';
+
+const photos = heroPhotos();
+// Four slots, as in the reference: filled in order, the rest stay placeholders.
+const slots = [0, 1, 2, 3].map((i) => ({
+  photo: photos[i],
+  label: `photo_${i + 1}.jpg`,
+}));
+---
+
+<section id="whoami">
+  <Prompt cmd="whoami" typed />
+  <div class="out">
+    <button class="name" id="name" aria-label="hey, I'm Amina"
+      >{site.name}<span class="cur" aria-hidden="true"></span></button
+    >
+    <p class="hero-line">{site.heroLine}</p>
+    <dl class="kv">
+      <dt>study</dt><dd>{site.study}</dd>
+      <dt>based</dt><dd>{site.based}</dd>
+      <dt>contact</dt><dd><a href={`mailto:${site.email}`}>{site.email}</a></dd>
+      <dt>links</dt>
+      <dd>
+        <a href={site.resume}>resume.pdf</a>&nbsp;&nbsp;<a href={site.github}>github</a>{
+          site.linkedin && (
+            <>
+              &nbsp;&nbsp;<a href={site.linkedin}>linkedin</a>
+            </>
+          )
+        }
+      </dd>
+    </dl>
+    <div class="slots">
+      {slots.map((s) => <PhotoSlot photo={s.photo} label={s.label} width={520} />)}
+    </div>
+  </div>
+</section>

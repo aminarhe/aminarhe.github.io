@@ -1,0 +1,18 @@
+---
+import { site } from '../data/site';
+
+interface Props {
+  /** The command text after the `$`. */
+  cmd: string;
+  /** Wrap the command in #typed so the script can type it out once. */
+  typed?: boolean;
+}
+
+const { cmd, typed = false } = Astro.props;
+---
+
+<p class="cmd">
+  <span class="u">{site.user}</span>:<span class="p">~</span>$ {
+    typed ? <span id="typed">{cmd}</span> : cmd
+  }
+</p>

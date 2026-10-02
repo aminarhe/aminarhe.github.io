@@ -1,0 +1,11 @@
+---
+import Prompt from './Prompt.astro';
+import { drives } from '../data/site';
+---
+
+<section id="drives">
+  <Prompt cmd="cat drives.txt" />
+  <div class="out">
+    <p>{drives}</p>
+  </div>
+</section>

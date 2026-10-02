@@ -1,0 +1,212 @@
+---
+import '@fontsource/jetbrains-mono/400.css';
+import '@fontsource/jetbrains-mono/700.css';
+import '@fontsource/jetbrains-mono/400-italic.css';
+import '../styles/global.css';
+
+import NavBar from '../components/NavBar.astro';
+import { site } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = site.title, description = site.description } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en" data-user={site.user}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="generator" content={Astro.generator} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+  </head>
+  <body>
+    <slot />
+    <NavBar />
+    <script>
+      const root = document.documentElement;
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      /* ---------- stars ---------- */
+      const STAR =
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 0 C13 8 16 11 24 12 C16 13 13 16 12 24 C11 16 8 13 0 12 C8 11 11 8 12 0Z"/></svg>';
+
+      function burst(x: number, y: number) {
+        if (reduce) return;
+        for (let i = 0; i < 8; i++) {
+          const s = document.createElement('span');
+          s.className = 'star';
+          s.innerHTML = STAR;
+          s.style.left = x - 8 + 'px';
+          s.style.top = y - 8 + 'px';
+          document.body.appendChild(s);
+          const a = (Math.PI * 2 * i) / 8 + Math.random() * 0.5;
+          const d = 50 + Math.random() * 60;
+          const an = s.animate(
+            [
+              { transform: 'translate(0,0) scale(0)', opacity: 1 },
+              {
+                transform:
+                  'translate(' +
+                  Math.cos(a) * d +
+                  'px,' +
+                  Math.sin(a) * d +
+                  'px) scale(' +
+                  (0.6 + Math.random() * 0.8) +
+                  ') rotate(' +
+                  (Math.random() * 180 - 90) +
+                  'deg)',
+                opacity: 0,
+              },
+            ],
+            { duration: 850 + Math.random() * 300, easing: 'cubic-bezier(.2,.7,.3,1)' },
+          );
+          an.onfinish = () => s.remove();
+        }
+      }
+
+      const nameBtn = document.getElementById('name');
+      nameBtn?.addEventListener('click', (e) => {
+        const r = nameBtn.getBoundingClientRect();
+        const ev = e as MouseEvent;
+        burst(ev.clientX || r.left + r.width / 2, ev.clientY || r.top + r.height / 2);
+      });
+
+      /* ---------- type the first command once ---------- */
+      const typed = document.getElementById('typed');
+      if (typed && !reduce) {
+        const word = typed.textContent || '';
+        typed.textContent = '';
+        let i = 0;
+        const step = () => {
+          typed.textContent = word.slice(0, ++i);
+          if (i < word.length) setTimeout(step, 70);
+        };
+        step();
+      }
+
+      /* ---------- tmux bar: highlight current section ---------- */
+      const term = document.getElementById('term');
+      const dirs = (term?.dataset.dirs || '').split(',').filter(Boolean);
+      const links = Array.from(
+        document.querySelectorAll<HTMLAnchorElement>('.bar a[data-sec]'),
+      );
+      const map: Record<string, HTMLAnchorElement> = {};
+      links.forEach((a) => {
+        if (a.dataset.sec) map[a.dataset.sec] = a;
+      });
+
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((en) => {
+              if (!en.isIntersecting) return;
+              links.forEach((a) => a.classList.remove('on'));
+              // drives has no bar entry of its own; it belongs to whoami.
+              const id = en.target.id === 'drives' ? 'whoami' : en.target.id;
+              if (map[id]) map[id].classList.add('on');
+            });
+          },
+          { rootMargin: '-40% 0px -55% 0px' },
+        );
+        dirs.forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) io.observe(el);
+        });
+      }
+
+      /* ---------- interactive prompt ---------- */
+      const log = document.getElementById('log');
+      const input = document.getElementById('cmd') as HTMLInputElement | null;
+
+      if (log && input && term) {
+        const email = term.dataset.email || '';
+        const resume = term.dataset.resume || '';
+        const github = term.dataset.github || '';
+        const githubLabel = term.dataset.githubLabel || github;
+
+        const print = (html: string) => {
+          const d = document.createElement('div');
+          d.className = 'line';
+          d.innerHTML = html;
+          log.appendChild(d);
+        };
+        const esc = (s: string) =>
+          s.replace(
+            /[&<>"]/g,
+            (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c] as string,
+          );
+        const go = (id: string) => {
+          document
+            .getElementById(id)
+            ?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+        };
+
+        const commands: Record<string, (arg: string) => void> = {
+          help: () =>
+            print(
+              '<span class="dim">ls, cd &lt;section&gt;, email, resume, github, stars, clear</span>',
+            ),
+          ls: () => print(dirs.join('/  ') + '/'),
+          cd: (arg) => {
+            const t = (arg || '').replace(/\/$/, '').replace(/^~\/?/, '');
+            if (!t) {
+              go('whoami');
+              return;
+            }
+            if (dirs.indexOf(t) > -1) go(t);
+            else print('cd: no such directory: ' + esc(t));
+          },
+          email: () => {
+            print('opening mail to ' + esc(email));
+            window.location.href = 'mailto:' + email;
+          },
+          resume: () => {
+            print('opening resume.pdf');
+            window.open(resume, '_blank', 'noopener');
+          },
+          github: () => {
+            print('opening ' + esc(githubLabel));
+            window.open(github, '_blank', 'noopener');
+          },
+          stars: () => {
+            const r = input.getBoundingClientRect();
+            burst(r.left + 40, r.top);
+          },
+          clear: () => {
+            log.innerHTML = '';
+          },
+        };
+
+        const user = root.dataset.user || '';
+        input.addEventListener('keydown', (e) => {
+          if ((e as KeyboardEvent).key !== 'Enter') return;
+          const raw = input.value.trim();
+          input.value = '';
+          print(
+            '<span class="u">' +
+              esc(user) +
+              '</span>:<span class="p">~</span>$ ' +
+              esc(raw),
+          );
+          if (!raw) return;
+          const parts = raw.split(/\s+/);
+          const c = parts[0].toLowerCase();
+          const arg = (parts[1] || '').toLowerCase();
+          if (commands[c]) commands[c](arg);
+          else print('command not found: ' + esc(c) + '. type help');
+        });
+      }
+    </script>
+  </body>
+</html>

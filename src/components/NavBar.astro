@@ -1,0 +1,10 @@
+---
+import { site, sections } from '../data/site';
+---
+
+<nav class="bar" aria-label="Sections">
+  <span class="host">{site.host}</span>
+  {sections.map((s) => <a href={`#${s.id}`} data-sec={s.id}>{s.label}</a>)}
+  <span class="sp"></span>
+  <a href={`mailto:${site.email}`}>email</a>
+</nav>

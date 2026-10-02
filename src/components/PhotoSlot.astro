@@ -1,0 +1,37 @@
+---
+import { Image } from 'astro:assets';
+import type { Photo } from '../lib/photos';
+
+interface Props {
+  /** The photo, if one has been dropped into `photos/` yet. */
+  photo?: Photo | undefined;
+  /** Placeholder file name shown in the dashed slot when there is no photo. */
+  label: string;
+  /** Written by Amina, never generated. Empty means a decorative image. */
+  caption?: string | undefined;
+  /** Rendered width in device pixels; the source is resized down to it. */
+  width?: number;
+}
+
+const { photo, label, caption, width = 480 } = Astro.props;
+const hasCaption = Boolean(caption && caption.trim());
+---
+
+{
+  photo ? (
+    hasCaption ? (
+      <figure class="shot">
+        <div class="slot filled">
+          <Image src={photo.image} alt={caption!} width={width} loading="lazy" decoding="async" />
+        </div>
+        <figcaption>{caption}</figcaption>
+      </figure>
+    ) : (
+      <div class="slot filled">
+        <Image src={photo.image} alt="" width={width} loading="lazy" decoding="async" />
+      </div>
+    )
+  ) : (
+    <div class="slot" aria-hidden="true">{label}</div>
+  )
+}

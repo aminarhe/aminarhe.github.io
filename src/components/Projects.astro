@@ -1,0 +1,88 @@
+---
+import { getCollection, render } from 'astro:content';
+import Prompt from './Prompt.astro';
+import PhotoSlot from './PhotoSlot.astro';
+import { projectCover, projectPhotos } from '../lib/photos';
+
+const entries = (await getCollection('projects')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+
+const projects = await Promise.all(
+  entries.map(async (entry) => {
+    const { Content } = await render(entry);
+    const dir = entry.data.photoDir ?? entry.id;
+    const photos = projectPhotos(dir);
+    // The reference shows two gallery slots even before any photo exists.
+    const cells = Array.from({ length: Math.max(photos.length, 2) }, (_, i) => ({
+      photo: photos[i],
+      label: `${String(i + 1).padStart(2, '0')}.jpg`,
+    }));
+    return {
+      id: entry.id,
+      data: entry.data,
+      Content,
+      cover: projectCover(dir),
+      cells,
+    };
+  }),
+);
+---
+
+<section id="projects">
+  <Prompt cmd="ls projects/" />
+  <div class="out">
+    <div class="ls">
+      {projects.map((p) => <a href={`#${p.id}`}>{p.id}/</a>)}
+    </div>
+  </div>
+  <div class="out md">
+    {
+      projects.map((p) => {
+        const { Content } = p;
+        return (
+        <article class="proj" id={p.id}>
+          <PhotoSlot
+            photo={p.cover}
+            label="cover.jpg"
+            caption={p.data.captions['cover.jpg']}
+            width={260}
+          />
+          <div class="blk">
+            <h3>{p.data.title}</h3>
+            {p.data.where && <p class="where">{p.data.where}</p>}
+            <p>{p.data.summary}</p>
+            <details>
+              <summary>photos and links</summary>
+              <Content />
+              <div class="gallery">
+                {p.cells.map((cell) => (
+                  <PhotoSlot
+                    photo={cell.photo}
+                    label={cell.label}
+                    caption={cell.photo && p.data.captions[cell.photo.file]}
+                    width={520}
+                  />
+                ))}
+              </div>
+              {p.data.stack.length > 0 && (
+                <p class="stack">stack: {p.data.stack.join(' ')}</p>
+              )}
+              {p.data.links.length > 0 && (
+                <p class="stack">
+                  {p.data.links.map((link, i) => (
+                    <>
+                      {i > 0 && <>&nbsp;&nbsp;</>}
+                      <a href={link.url}>{link.label}</a>
+                    </>
+                  ))}
+                </p>
+              )}
+            </details>
+          </div>
+        </article>
+        );
+      })
+    }
+  </div>
+</section>

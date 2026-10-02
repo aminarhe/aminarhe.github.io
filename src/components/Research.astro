@@ -1,0 +1,13 @@
+---
+import Prompt from './Prompt.astro';
+import { research } from '../data/research';
+---
+
+<section id="research">
+  <Prompt cmd={`cat ${research.file}`} />
+  <div class="out md">
+    <h3>{research.title}</h3>
+    <p class="when">{research.with}</p>
+    <p>{research.body}</p>
+  </div>
+</section>

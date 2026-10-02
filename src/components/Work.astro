@@ -1,0 +1,50 @@
+---
+import Prompt from './Prompt.astro';
+import { work } from '../data/work';
+---
+
+<section id="work">
+  <Prompt cmd="cat work.md" />
+  <div class="out md">
+    {
+      work.map((entry) => (
+        <>
+          <h3>{entry.company}</h3>
+          {entry.when && <p class="when">{entry.when}</p>}
+          {entry.summary && <p>{entry.summary}</p>}
+          {entry.more && (
+            <details>
+              <summary>more</summary>
+              <ul>
+                {entry.more.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+              {entry.stack && <p class="stack">{entry.stack}</p>}
+            </details>
+          )}
+          {entry.roles?.map((role) => (
+            <>
+              <h4>
+                {role.title}{' '}
+                {role.when && <span class="when">{role.when}</span>}
+              </h4>
+              <p>{role.summary}</p>
+              {role.more && (
+                <details>
+                  <summary>more</summary>
+                  <ul>
+                    {role.more.map((item) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                  {role.stack && <p class="stack">{role.stack}</p>}
+                </details>
+              )}
+            </>
+          ))}
+        </>
+      ))
+    }
+  </div>
+</section>

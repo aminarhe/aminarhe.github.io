@@ -1,0 +1,26 @@
+---
+import { site, directories } from '../data/site';
+---
+
+<section
+  id="term"
+  aria-label="Interactive terminal"
+  data-dirs={directories.join(',')}
+  data-email={site.email}
+  data-resume={site.resume}
+  data-github={site.github}
+  data-github-label={site.githubLabel}
+>
+  <p class="cmd dim"># type help, or just keep scrolling</p>
+  <div id="log"></div>
+  <div class="inrow">
+    <label for="cmd"><span class="u">{site.user}</span>:<span class="p">~</span>$</label>
+    <input
+      id="cmd"
+      autocomplete="off"
+      autocapitalize="off"
+      spellcheck="false"
+      aria-label="Type a command"
+    />
+  </div>
+</section>

@@ -1,0 +1,31 @@
+---
+import Prompt from './Prompt.astro';
+import PhotoSlot from './PhotoSlot.astro';
+import { cities, elsewhereNote } from '../data/cities';
+import { cityPhoto } from '../lib/photos';
+
+const list = cities.map((city) => ({ ...city, photo: cityPhoto(city.slug) }));
+---
+
+<section id="elsewhere">
+  <Prompt cmd="ls ~/elsewhere" />
+  <div class="out">
+    {
+      elsewhereNote ? (
+        <p>{elsewhereNote}</p>
+      ) : (
+        <p class="note"># a line from you about these cities goes here</p>
+      )
+    }
+    <div class="cities">
+      {
+        list.map((city) => (
+          <div>
+            <PhotoSlot photo={city.photo} label={`${city.slug}.jpg`} width={420} />
+            {city.slug}/ <span class="dim">{city.tag}</span>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
