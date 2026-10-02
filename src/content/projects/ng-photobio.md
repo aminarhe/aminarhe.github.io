@@ -1,7 +1,7 @@
 ---
 title: NG-PhotoBio
 where: World Robot Olympiad, 3rd place, team of 3
-order: 6
+order: 7
 summary: >-
   In summer 2020 our local Ishim river turned green from an algae bloom. We
   extracted algae oil for biofuel, then built a photobioreactor and robot to
@@ -10,6 +10,11 @@ summary: >-
 links:
   - label: project file
     url: https://drive.google.com/file/d/1q4PIQh-YLUoR7u1W0_qxzWkmeaQ8G_7X/view?usp=sharing
-stack: []
-captions: {}
+stack:
+  - "Research"
+  - "Robotics"
+  - "Science"
+captions:
+  "cover.jpg": "lego mindstorms, doing biology"
+  "01.jpg": "mom im on tv"
 ---

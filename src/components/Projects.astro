@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import Prompt from './Prompt.astro';
 import PhotoSlot from './PhotoSlot.astro';
+import Stack from './Stack.astro';
 import { projectCover, projectPhotos } from '../lib/photos';
 
 const entries = (await getCollection('projects')).sort(
@@ -13,17 +14,17 @@ const projects = await Promise.all(
     const { Content } = await render(entry);
     const dir = entry.data.photoDir ?? entry.id;
     const photos = projectPhotos(dir);
-    // The reference shows two gallery slots even before any photo exists.
-    const cells = Array.from({ length: Math.max(photos.length, 2) }, (_, i) => ({
-      photo: photos[i],
-      label: `${String(i + 1).padStart(2, '0')}.jpg`,
-    }));
+    const cells = photos.map((photo) => ({ photo, label: photo.file }));
+    // The [+] photos toggle only appears when there is something inside it:
+    // gallery photos, or extra text written below the project's frontmatter.
+    const hasMore = photos.length > 0 || Boolean(entry.body?.trim());
     return {
       id: entry.id,
       data: entry.data,
       Content,
       cover: projectCover(dir),
       cells,
+      hasMore,
     };
   }),
 );
@@ -45,15 +46,28 @@ const projects = await Promise.all(
           <PhotoSlot
             photo={p.cover}
             label="cover.jpg"
-            caption={p.data.captions['cover.jpg']}
+            caption={p.cover && p.data.captions[p.cover.file]}
             width={260}
           />
           <div class="blk">
             <h3>{p.data.title}</h3>
             {p.data.where && <p class="where">{p.data.where}</p>}
             <p>{p.data.summary}</p>
+            {p.data.stack.length > 0 && <Stack items={p.data.stack} />}
+            {p.data.links.length > 0 && (
+              <p class="links">
+                <span class="label">links:</span>{' '}
+                {p.data.links.map((link, i) => (
+                  <>
+                    {i > 0 && <>&nbsp;&nbsp;</>}
+                    <a href={link.url}>{link.label}</a>
+                  </>
+                ))}
+              </p>
+            )}
+            {p.hasMore && (
             <details>
-              <summary>photos and links</summary>
+              <summary>photos</summary>
               <Content />
               <div class="gallery">
                 {p.cells.map((cell) => (
@@ -65,20 +79,8 @@ const projects = await Promise.all(
                   />
                 ))}
               </div>
-              {p.data.stack.length > 0 && (
-                <p class="stack">stack: {p.data.stack.join(' ')}</p>
-              )}
-              {p.data.links.length > 0 && (
-                <p class="stack">
-                  {p.data.links.map((link, i) => (
-                    <>
-                      {i > 0 && <>&nbsp;&nbsp;</>}
-                      <a href={link.url}>{link.label}</a>
-                    </>
-                  ))}
-                </p>
-              )}
             </details>
+            )}
           </div>
         </article>
         );

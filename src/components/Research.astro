@@ -4,10 +4,16 @@ import { research } from '../data/research';
 ---
 
 <section id="research">
-  <Prompt cmd={`cat ${research.file}`} />
+  <Prompt cmd="cat research/*.md" />
   <div class="out md">
-    <h3>{research.title}</h3>
-    <p class="when">{research.with}</p>
-    <p>{research.body}</p>
+    {
+      research.map((r) => (
+        <>
+          <h3>{r.title}</h3>
+          {r.with && <p class="when">{r.with}</p>}
+          <p>{r.body}</p>
+        </>
+      ))
+    }
   </div>
 </section>

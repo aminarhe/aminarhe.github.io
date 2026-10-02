@@ -1,13 +1,14 @@
 ---
 import { Image } from 'astro:assets';
 import type { Photo } from '../lib/photos';
+import { photoFocus } from '../data/captions';
 
 interface Props {
   /** The photo, if one has been dropped into `photos/` yet. */
   photo?: Photo | undefined;
   /** Placeholder file name shown in the dashed slot when there is no photo. */
   label: string;
-  /** Written by Amina, never generated. Empty means a decorative image. */
+  /** Amina's words. Empty means a decorative image. */
   caption?: string | undefined;
   /** Rendered width in device pixels; the source is resized down to it. */
   width?: number;
@@ -15,6 +16,8 @@ interface Props {
 
 const { photo, label, caption, width = 480 } = Astro.props;
 const hasCaption = Boolean(caption && caption.trim());
+// Slots are 4:3, so a portrait photo gets cropped. `photoFocus` says which part to keep.
+const focus = photo ? photoFocus[photo.path] : undefined;
 ---
 
 {
@@ -22,13 +25,27 @@ const hasCaption = Boolean(caption && caption.trim());
     hasCaption ? (
       <figure class="shot">
         <div class="slot filled">
-          <Image src={photo.image} alt={caption!} width={width} loading="lazy" decoding="async" />
+          <Image
+            src={photo.image}
+            alt={caption!}
+            width={width}
+            style={focus ? `object-position:${focus}` : undefined}
+            loading="lazy"
+            decoding="async"
+          />
         </div>
         <figcaption>{caption}</figcaption>
       </figure>
     ) : (
       <div class="slot filled">
-        <Image src={photo.image} alt="" width={width} loading="lazy" decoding="async" />
+        <Image
+          src={photo.image}
+          alt=""
+          width={width}
+          style={focus ? `object-position:${focus}` : undefined}
+          loading="lazy"
+          decoding="async"
+        />
       </div>
     )
   ) : (

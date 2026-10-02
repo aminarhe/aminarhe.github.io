@@ -10,5 +10,6 @@ links:
   - label: project page
     url: https://www.spaceappschallenge.org/2023/find-a-team/astra-reges/?tab=project
 stack: []
-captions: {}
+captions:
+  "cover.jpg": "NASA prize table"
 ---

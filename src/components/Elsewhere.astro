@@ -1,10 +1,15 @@
 ---
 import Prompt from './Prompt.astro';
 import PhotoSlot from './PhotoSlot.astro';
-import { cities, elsewhereNote } from '../data/cities';
+import { cities, elsewhereNote, flag } from '../data/cities';
 import { cityPhoto } from '../lib/photos';
+import { cityCaptions } from '../data/captions';
 
-const list = cities.map((city) => ({ ...city, photo: cityPhoto(city.slug) }));
+const list = cities.map((city) => ({
+  ...city,
+  photo: cityPhoto(city.slug),
+  caption: cityCaptions[city.slug],
+}));
 ---
 
 <section id="elsewhere">
@@ -21,8 +26,9 @@ const list = cities.map((city) => ({ ...city, photo: cityPhoto(city.slug) }));
       {
         list.map((city) => (
           <div>
-            <PhotoSlot photo={city.photo} label={`${city.slug}.jpg`} width={420} />
-            {city.slug}/ <span class="dim">{city.tag}</span>
+            <PhotoSlot photo={city.photo} label={`${city.slug}.jpg`} caption={city.caption} width={420} />
+            <span class="flag">{flag(city.country)}</span> {city.slug}/{' '}
+            <span class="dim">{city.tag}</span>
           </div>
         ))
       }

@@ -3,12 +3,14 @@ import Prompt from './Prompt.astro';
 import PhotoSlot from './PhotoSlot.astro';
 import { site } from '../data/site';
 import { heroPhotos } from '../lib/photos';
+import { heroCaptions } from '../data/captions';
 
 const photos = heroPhotos();
 // Four slots, as in the reference: filled in order, the rest stay placeholders.
 const slots = [0, 1, 2, 3].map((i) => ({
   photo: photos[i],
   label: `photo_${i + 1}.jpg`,
+  caption: photos[i] ? heroCaptions[photos[i].file] : undefined,
 }));
 ---
 
@@ -35,7 +37,11 @@ const slots = [0, 1, 2, 3].map((i) => ({
       </dd>
     </dl>
     <div class="slots">
-      {slots.map((s) => <PhotoSlot photo={s.photo} label={s.label} width={520} />)}
+      {
+        slots.map((s) => (
+          <PhotoSlot photo={s.photo} label={s.label} caption={s.caption} width={520} />
+        ))
+      }
     </div>
   </div>
 </section>

@@ -1,5 +1,6 @@
 ---
 import Prompt from './Prompt.astro';
+import Stack from './Stack.astro';
 import { work } from '../data/work';
 ---
 
@@ -12,6 +13,7 @@ import { work } from '../data/work';
           <h3>{entry.company}</h3>
           {entry.when && <p class="when">{entry.when}</p>}
           {entry.summary && <p>{entry.summary}</p>}
+          {entry.stack && <Stack items={entry.stack} />}
           {entry.more && (
             <details>
               <summary>more</summary>
@@ -20,7 +22,6 @@ import { work } from '../data/work';
                   <li>{item}</li>
                 ))}
               </ul>
-              {entry.stack && <p class="stack">{entry.stack}</p>}
             </details>
           )}
           {entry.roles?.map((role) => (
@@ -30,6 +31,7 @@ import { work } from '../data/work';
                 {role.when && <span class="when">{role.when}</span>}
               </h4>
               <p>{role.summary}</p>
+              {role.stack && <Stack items={role.stack} />}
               {role.more && (
                 <details>
                   <summary>more</summary>
@@ -38,7 +40,6 @@ import { work } from '../data/work';
                       <li>{item}</li>
                     ))}
                   </ul>
-                  {role.stack && <p class="stack">{role.stack}</p>}
                 </details>
               )}
             </>

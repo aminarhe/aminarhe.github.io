@@ -8,11 +8,15 @@
   --slot: #e4e5df;
   --user: #2a7a45;
   --path: #2e56c8;
-  --accent: #b4452f;
+  --accent: #b8326b; /* stack text: deep shade of --pink, readable on paper */
   --star: #d99a1b;
   --sel: #dde3f7;
+  --pink: #f4a7c6; /* tmux bar: current window and host */
   --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
   --grain: 0.06;
+  /* Your name under `whoami`. Body size reads as plain terminal output;
+     raise it (e.g. 24px) if you want the page to have a focal point. */
+  --name-size: 1em;
 
   box-sizing: border-box;
   padding-top: env(safe-area-inset-top, 0px);
@@ -87,6 +91,21 @@ main {
   }
 }
 
+/* sections: each command starts a new block, set off by a faint dashed rule
+   (the same dashed line the photo placeholders use) */
+main > section + section {
+  margin-top: 56px;
+  padding-top: 28px;
+  border-top: 1px dashed var(--faint);
+}
+
+/* "cat drives.txt" continues whoami, so it stays attached without a rule */
+main > section#drives {
+  margin-top: 28px;
+  padding-top: 0;
+  border-top: 0;
+}
+
 /* prompt lines */
 .cmd {
   margin-top: 44px;
@@ -120,11 +139,10 @@ main {
 
 /* whoami */
 .name {
-  font-size: clamp(30px, 5.4vw, 52px);
+  font-size: var(--name-size);
   font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  margin-top: 6px;
+  line-height: inherit;
+  margin-top: 0;
   cursor: pointer;
   display: inline-block;
   background: none;
@@ -151,16 +169,16 @@ main {
 }
 
 .hero-line {
-  margin-top: 14px;
+  margin-top: 10px;
   max-width: 60ch;
-  font-size: 17px;
 }
 
 .kv {
   display: grid;
-  grid-template-columns: 10ch 1fr;
-  gap: 2px 16px;
-  margin-top: 16px;
+  grid-template-columns: 9ch 1fr;
+  gap: 0 1ch;
+  margin-top: 14px;
+  max-width: 60ch;
 }
 
 .kv dt {
@@ -212,7 +230,15 @@ figure.shot {
 figure.shot figcaption {
   margin-top: 4px;
   font-size: 12px;
+  line-height: 1.45;
   color: var(--dim);
+  /* covers are narrow on phones; let long words like Hero.moveRight() break */
+  overflow-wrap: anywhere;
+}
+
+/* captions read as comment lines, like the rest of the scrollback */
+figure.shot figcaption::before {
+  content: '# ';
 }
 
 /* markdown-ish rendering */
@@ -271,7 +297,18 @@ figure.shot figcaption {
   margin-top: 6px;
 }
 
+/* stack: the label stays grey like other terminal keys; the tools use the
+   palette's accent so they stand out when someone skims for them */
 .stack {
+  color: var(--accent);
+  margin-top: 8px;
+}
+
+.stack .label {
+  color: var(--dim);
+}
+
+.links {
   color: var(--dim);
   margin-top: 8px;
 }
@@ -353,6 +390,12 @@ details > summary:hover {
   margin-bottom: 6px;
 }
 
+/* emoji flags render as color; keep them from stretching the line */
+.cities .flag {
+  font-size: 1.05em;
+  line-height: 1;
+}
+
 .note {
   color: var(--dim);
   font-style: italic;
@@ -396,10 +439,10 @@ details > summary:hover {
   z-index: 30;
   background: var(--fg);
   color: var(--bg);
-  padding: 4px 16px calc(4px + env(safe-area-inset-bottom, 0px));
-  font-size: 13px;
+  padding: 9px 20px calc(9px + env(safe-area-inset-bottom, 0px));
+  font-size: 15px;
   display: flex;
-  gap: 2ch;
+  gap: 1.5ch;
   align-items: center;
   overflow-x: auto;
   white-space: nowrap;
@@ -413,21 +456,30 @@ details > summary:hover {
 .bar a {
   color: inherit;
   text-decoration: none;
-  padding: 0 0.5ch;
+  padding: 2px 1ch;
 }
 
+/* the window you're in: a pink block, like tmux's current-window highlight */
 .bar a.on {
-  background: var(--bg);
+  background: var(--pink);
   color: var(--fg);
+  font-weight: 700;
 }
 
 .bar a:hover {
   background: transparent;
-  text-decoration: underline;
+  color: var(--pink);
+}
+
+.bar a.on:hover {
+  background: var(--pink);
+  color: var(--fg);
 }
 
 .bar .host {
   font-weight: 700;
+  color: var(--pink);
+  margin-right: 1ch;
 }
 
 .bar .sp {
@@ -452,6 +504,12 @@ details > summary:hover {
 @media (max-width: 640px) {
   body {
     font-size: 14px;
+  }
+
+  .bar {
+    font-size: 14px;
+    padding-left: 12px;
+    padding-right: 12px;
   }
 
   main {

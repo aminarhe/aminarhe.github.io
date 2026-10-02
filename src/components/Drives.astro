@@ -1,11 +1,25 @@
 ---
 import Prompt from './Prompt.astro';
-import { drives } from '../data/site';
+import { drives, site } from '../data/site';
+
+// Split each paragraph around {email} so that word becomes a mailto link.
+const paragraphs = drives.map((text) => text.split('{email}'));
 ---
 
 <section id="drives">
   <Prompt cmd="cat drives.txt" />
   <div class="out">
-    <p>{drives}</p>
+    {
+      paragraphs.map((parts) => (
+        <p>
+          {parts.map((part, i) => (
+            <>
+              {i > 0 && <a href={`mailto:${site.email}`}>email</a>}
+              {part}
+            </>
+          ))}
+        </p>
+      ))
+    }
   </div>
 </section>

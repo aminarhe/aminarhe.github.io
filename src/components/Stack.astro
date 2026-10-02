@@ -1,0 +1,9 @@
+---
+interface Props {
+  items: string[];
+}
+
+const { items } = Astro.props;
+---
+
+<p class="stack"><span class="label">stack:</span> {items.join(', ')}</p>

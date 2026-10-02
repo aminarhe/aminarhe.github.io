@@ -155,7 +155,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
         const commands: Record<string, (arg: string) => void> = {
           help: () =>
             print(
-              '<span class="dim">ls, cd &lt;section&gt;, email, resume, github, stars, clear</span>',
+              '<span class="dim">ls, cd &lt;section&gt;, email, resume, github, stars, clear<br>tab completes, up and down walk history</span>',
             ),
           ls: () => print(dirs.join('/  ') + '/'),
           cd: (arg) => {
@@ -189,10 +189,92 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
         };
 
         const user = root.dataset.user || '';
+        const names = Object.keys(commands).sort();
+
+        /* ---------- history (this page view only) ---------- */
+        const history: string[] = [];
+        // Where we are when scrolling back: history.length means "at the new line".
+        let cursor = 0;
+        // The half-typed line, parked while scrolling back through history.
+        let draft = '';
+
+        const recall = (step: number) => {
+          if (!history.length) return;
+          if (cursor === history.length) draft = input.value;
+          const next = Math.min(Math.max(cursor + step, 0), history.length);
+          if (next === cursor) return;
+          cursor = next;
+          input.value = cursor === history.length ? draft : history[cursor];
+          // Put the caret at the end rather than wherever it was.
+          requestAnimationFrame(() => input.setSelectionRange(input.value.length, input.value.length));
+        };
+
+        /* ---------- tab completion ---------- */
+        const longestPrefix = (xs: string[]) =>
+          xs.reduce((a, b) => {
+            let i = 0;
+            while (i < a.length && i < b.length && a[i] === b[i]) i++;
+            return a.slice(0, i);
+          });
+
+        const complete = () => {
+          const value = input.value;
+          // Only the word under the caret is completed, and only in two places:
+          // the command itself, or the argument of `cd`.
+          const words = value.split(/\s+/);
+          const atCommand = words.length <= 1;
+          const pool = atCommand
+            ? names
+            : words[0].toLowerCase() === 'cd'
+              ? dirs
+              : [];
+          if (!pool.length) return;
+
+          const word = (atCommand ? words[0] : words[words.length - 1]).toLowerCase();
+          const hits = pool.filter((n) => n.startsWith(word));
+          if (!hits.length) return;
+
+          const filled = hits.length === 1 ? hits[0] + ' ' : longestPrefix(hits);
+          input.value = atCommand
+            ? filled
+            : words.slice(0, -1).join(' ') + ' ' + filled;
+
+          // More than one candidate: show them, the way a shell does.
+          if (hits.length > 1 && filled === word) {
+            print(
+              '<span class="u">' + esc(user) + '</span>:<span class="p">~</span>$ ' + esc(value),
+            );
+            print('<span class="dim">' + hits.map(esc).join('  ') + '</span>');
+          }
+        };
+
         input.addEventListener('keydown', (e) => {
-          if ((e as KeyboardEvent).key !== 'Enter') return;
+          const ev = e as KeyboardEvent;
+
+          if (ev.key === 'Tab') {
+            ev.preventDefault();
+            complete();
+            return;
+          }
+          if (ev.key === 'ArrowUp') {
+            ev.preventDefault();
+            recall(-1);
+            return;
+          }
+          if (ev.key === 'ArrowDown') {
+            ev.preventDefault();
+            recall(1);
+            return;
+          }
+          if (ev.key !== 'Enter') return;
+
           const raw = input.value.trim();
           input.value = '';
+          // Don't record a repeat of the line just before it.
+          if (raw && history[history.length - 1] !== raw) history.push(raw);
+          cursor = history.length;
+          draft = '';
+
           print(
             '<span class="u">' +
               esc(user) +

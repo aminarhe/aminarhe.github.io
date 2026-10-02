@@ -9,6 +9,13 @@ summary: >-
 links:
   - label: video
     url: https://www.youtube.com/watch?v=yc8SZlwvaqo
-stack: []
-captions: {}
+stack:
+  - "Python"
+  - "ACT"
+  - "Gemini"
+  - "ElevenLabs"
+  - "Robotics"
+captions:
+  "cover.jpg": "meet Gordy the chief"
+  "01.jpg": "team rm -rf /legs"
 ---
