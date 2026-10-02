@@ -1,5 +1,6 @@
 ---
 import { site, directories } from '../data/site';
+import { resumeUrl } from '../lib/resume';
 ---
 
 <section
@@ -7,7 +8,7 @@ import { site, directories } from '../data/site';
   aria-label="Interactive terminal"
   data-dirs={directories.join(',')}
   data-email={site.email}
-  data-resume={site.resume}
+  data-resume={resumeUrl}
   data-github={site.github}
   data-github-label={site.githubLabel}
 >

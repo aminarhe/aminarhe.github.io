@@ -26,7 +26,7 @@ export const experience: Entry[] = [
     company: 'Lucid Computing',
     when: 'Infrastructure and Software Engineer Intern, May to August 2026',
     summary:
-      'Built a heterogeneous 16-GPU cluster (H100, A100, etc.) under one Slurm-on-Kubernetes scheduler. Deployment reproducible through GitOps, a separate dev cluster came up from the same declarative config with no manual setup.',
+      'Built a heterogeneous 16-GPU cluster (H100 and A100) under one Slurm-on-Kubernetes scheduler, plus its CI/CD pipeline. Deployment is reproducible through GitOps: a separate dev cluster came up from the same declarative config with no manual setup.',
     more: [
       'Shipped researcher-facing platform: a FastAPI control plane as the cluster single provisioning and audit path across Slurm, LDAP, NFS, and Kubernetes, and a React console for self-serve GPU provisioning, SSH access, and role-based access.',
       'Served Qwen3.5-397B-A17B tensor-parallel across 8× H100, maintained as code and guarded by a CI smoke test that tells real regressions from a busy cluster.',

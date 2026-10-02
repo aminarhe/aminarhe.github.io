@@ -9,8 +9,9 @@
   --user: #2a7a45;
   --path: #2e56c8;
   --accent: #b8326b; /* stack text: deep shade of --pink, readable on paper */
-  --star: #d99a1b;
+  --star: #e6739f; /* name sparkles: between --pink and --accent, so they show on paper */
   --sel: #dde3f7;
+  --select: #f8d3e2; /* selected text: pale shade of --pink */
   --pink: #f4a7c6; /* tmux bar: current window and host */
   --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
   --grain: 0.06;
@@ -49,7 +50,8 @@ body {
 }
 
 ::selection {
-  background: var(--sel);
+  background: var(--select);
+  color: var(--fg);
 }
 
 /* grain overlay */

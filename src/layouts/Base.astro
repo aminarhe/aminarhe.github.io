@@ -14,6 +14,8 @@ interface Props {
 
 const { title = site.title, description = site.description } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+// Link-preview image (Slack, LinkedIn, iMessage...). Made from public/og.png.
+const ogImage = new URL('/og.png', Astro.site);
 ---
 
 <!doctype html>
@@ -29,6 +31,16 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={site.host} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${site.title}: ${site.description}`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#222428" />
   </head>
   <body>
     <slot />
@@ -75,11 +87,21 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
         }
       }
 
-      const nameBtn = document.getElementById('name');
-      nameBtn?.addEventListener('click', (e) => {
-        const r = nameBtn.getBoundingClientRect();
+      // A click anywhere on the page bursts where you clicked.
+      document.addEventListener('click', (e) => {
         const ev = e as MouseEvent;
-        burst(ev.clientX || r.left + r.width / 2, ev.clientY || r.top + r.height / 2);
+        const target = ev.target as HTMLElement | null;
+        // not while typing in the terminal, and not when a click just
+        // finished selecting text
+        if (target?.closest('input, textarea')) return;
+        if (getSelection()?.toString()) return;
+        // keyboard "clicks" (Enter on the name) have no pointer position
+        if (ev.detail === 0 && target) {
+          const r = target.getBoundingClientRect();
+          burst(r.left + r.width / 2, r.top + r.height / 2);
+          return;
+        }
+        burst(ev.clientX, ev.clientY);
       });
 
       /* ---------- type the first command once ---------- */

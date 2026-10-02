@@ -1,23 +1,26 @@
 // Every value here comes from reference/design-reference.html. Do not invent.
 
 export const site = {
-  title: 'amina@aminarhe.me',
-  description: 'Amina Rakhimbergenova: infrastructure, robotics, and AI safety.',
+  /** Browser tab, search results, and link previews. */
+  title: 'Amina Rakhimbergenova',
+  /** Search-result snippet and link-preview text, in your own words from the intro. */
+  description:
+    'Software engineer building across AI/ML and robotics, from GPU clusters and LLM serving to robot learning and hardware.',
   host: 'aminarhe.me',
   user: 'amina@aminarhe.me',
-  name: 'hey, I’m Amina.',
+  name: 'hey, I’m Amina Rakhimbergenova.',
   heroLine:
-    'I’m a software engineer building across AI/ML and robotics, from GPU clusters and LLM serving to robot learning and hardware. I learn new fields fast, but spend most of my time understanding the problem first principles, down to the math. I’m drawn to ambitious problems, like automating synthetic biology or building technology for AI treaties.',
+    'I’m a software engineer building across AI/ML and robotics, from GPU clusters and LLM serving to robot learning and hardware. I learn new fields fast, but spend most of my time understanding the problem from first principles, down to the math. I’m drawn to ambitious problems, like automating synthetic biology or building technology for AI treaties.',
   study:
     'B.S. Computational Sciences (Concentrating in Math), Minerva University [Graduating May 2027]',
+  seeking: 'Full-time roles',
   based: 'San Francisco',
   email: 'amina@uni.minerva.edu',
   resume:
     'https://drive.google.com/file/d/1HpgkH0RtOocvGzwOE7oBc-R135cUvxs5/view?usp=sharing',
   github: 'https://github.com/aminarhe',
   githubLabel: 'github.com/aminarhe',
-  // TODO(amina): LinkedIn URL — not in the reference, send it and it goes under "links".
-  linkedin: null as string | null,
+  linkedin: 'https://www.linkedin.com/in/aminarhe/' as string | null,
 } as const;
 
 /**

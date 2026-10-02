@@ -218,6 +218,24 @@ Smaller percentage keeps more of the top, larger keeps more of the bottom.
 
 ---
 
+## Your resume
+
+Save your PDF as **`public/resume.pdf`** and push. It's then served at
+`aminarhe.me/resume.pdf`, and the `resume.pdf` link on the page switches to it
+automatically. Until that file exists, the link points to the Google Drive copy.
+
+To update it: export a new PDF from Overleaf, replace `public/resume.pdf`, push.
+
+---
+
+## Link previews and the tab icon
+
+`public/og.png` is the card that shows when someone pastes your link into
+Slack, LinkedIn or iMessage. `public/favicon.svg` (plus the two PNGs next to it)
+is the pink star in the browser tab. Ask if you want either redesigned.
+
+---
+
 ## The terminal at the bottom
 
 Visitors can type into it. It understands:
