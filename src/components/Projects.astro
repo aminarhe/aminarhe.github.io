@@ -31,7 +31,7 @@ const projects = await Promise.all(
 ---
 
 <section id="projects">
-  <Prompt cmd="ls projects/" />
+  <Prompt cmd="ls Projects/" />
   <div class="out">
     <div class="ls">
       {projects.map((p) => <a href={`#${p.id}`}>{p.id}/</a>)}

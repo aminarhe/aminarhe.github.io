@@ -21,7 +21,7 @@ export type Entry = {
   roles?: Role[];
 };
 
-export const work: Entry[] = [
+export const experience: Entry[] = [
   {
     company: 'Lucid Computing',
     when: 'Infrastructure and Software Engineer Intern, May to August 2026',

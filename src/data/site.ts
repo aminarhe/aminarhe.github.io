@@ -7,9 +7,9 @@ export const site = {
   user: 'amina@aminarhe.me',
   name: 'hey, I’m Amina.',
   heroLine:
-    'I’m a software engineer who builds across AI/ML and robotics, from GPU clusters and LLM serving to imitation-learning policies, robot hardware, and optimization engines. I dive into new fields fast, but most of my time goes into the problem itself — getting to its first principles, usually through the math. Then the building is faster and more meaningful. I’m drawn to ambitious problems, like automating synthetic biology or building technology for AI treaties.',
+    'I’m a software engineer building across AI/ML and robotics, from GPU clusters and LLM serving to robot learning and hardware. I learn new fields fast, but spend most of my time understanding the problem first principles, down to the math. I’m drawn to ambitious problems, like automating synthetic biology or building technology for AI treaties.',
   study:
-    'Final year, B.S. Computational Sciences (Math and AI), Minerva University',
+    'B.S. Computational Sciences (Concentrating in Math), Minerva University [Graduating May 2027]',
   based: 'San Francisco',
   email: 'amina@uni.minerva.edu',
   resume:
@@ -25,14 +25,14 @@ export const site = {
  * email address linked; it shows as the word "email".
  */
 export const drives: string[] = [
-  'I grew up in Kazakhstan, where many systems weren’t designed to help you, so you learn to build what you need yourself. It taught me that one person or a small team can make a real difference. That’s still how I work: if a problem frustrates me and I think I can do something about it, I do.',
-  'The problem I can’t stop thinking about is AI risk. I’ve been digging into it and starting to work on it, and I want to keep going, in AI safety or adjacent to it.',
-  'I’m also into philosophy, history, and art for social change, so I’m always up for a good argument. Hot takes welcome by {email}.',
+  'I grew up in Kazakhstan, where you often have to build what you need yourself. It taught me that an individual or a small team can make a real difference, and it’s still how I work - if a problem frustrates me and I can do something about it, I do it.',
+  'The problem I can’t stop thinking about is AI risk, and I want to work on it, in AI safety or adjacent to it.',
+  'I’m also into philosophy, history, and art for social change. Hot takes welcome by {email}.',
 ];
 
 export const sections = [
   { id: 'whoami', label: '0:whoami' },
-  { id: 'work', label: '1:work' },
+  { id: 'experience', label: '1:experience' },
   { id: 'projects', label: '2:projects' },
   { id: 'research', label: '3:research' },
   { id: 'elsewhere', label: '4:elsewhere' },
@@ -42,7 +42,7 @@ export const sections = [
 export const directories = [
   'whoami',
   'drives',
-  'work',
+  'experience',
   'projects',
   'research',
   'elsewhere',

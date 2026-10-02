@@ -1,14 +1,14 @@
 ---
 import Prompt from './Prompt.astro';
 import Stack from './Stack.astro';
-import { work } from '../data/work';
+import { experience } from '../data/experience';
 ---
 
-<section id="work">
-  <Prompt cmd="cat work.md" />
+<section id="experience">
+  <Prompt cmd="cat experience.md" />
   <div class="out md">
     {
-      work.map((entry) => (
+      experience.map((entry) => (
         <>
           <h3>{entry.company}</h3>
           {entry.when && <p class="when">{entry.when}</p>}

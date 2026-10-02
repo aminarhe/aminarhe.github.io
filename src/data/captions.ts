@@ -11,7 +11,7 @@ export const heroCaptions: Record<string, string> = {
   '01-lucid-datacenter.jpg': 'first time in data center',
   '02-trilo-pcb.jpg': 'a pcb, designed by me [rhyme!]',
   '03-sutro.png': 'Sutro baths, correct amount of cloud',
-  '04-patagoniame.JPG': 'hiking in Patagonia'
+  '04-patagoniame.jpg': 'hiking in Patagonia'
 };
 
 export const cityCaptions: Record<string, string> = {

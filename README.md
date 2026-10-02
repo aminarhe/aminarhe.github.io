@@ -52,7 +52,7 @@ That's it. Pushing to `main` rebuilds and deploys the live site automatically
 | --- | --- |
 | Your name, intro line, study/based/contact, resume + github links | `src/data/site.ts` |
 | The "drives.txt" text (one string per paragraph; `{email}` becomes a link) | `src/data/site.ts` |
-| Jobs and internships | `src/data/work.ts` |
+| Jobs and internships (the Experience section) | `src/data/experience.ts` |
 | Research | `src/data/research.ts` |
 | Cities in "elsewhere" + your line about them | `src/data/cities.ts` |
 | One project | `src/content/projects/<name>.md` |
@@ -123,9 +123,9 @@ Delete the `.md` file to remove a project. Reorder by changing `order` numbers.
 
 ---
 
-## Editing work
+## Editing experience
 
-`src/data/work.ts` holds a list of places. Each one looks like:
+`src/data/experience.ts` holds a list of places. Each one looks like:
 
 ```ts
 {
@@ -164,7 +164,7 @@ photos/
                    seoul.jpg, astana.jpg
   projects/<name>/ cover.jpg  = the small square next to the project
                    01.jpg, 02.jpg, ... = the gallery inside "photos"
-  work/            parked for now — not shown anywhere yet
+  experience/      parked for now — not shown anywhere yet
 ```
 
 - The hero files are numbered (`01-`, `02-`, `03-`, `04-`) purely so you
@@ -255,7 +255,7 @@ so it's shown as text and never run.
 - City photos (all five) — `photos/elsewhere/`
 - Your LinkedIn URL — `src/data/site.ts`
 - A work photo section, once there are more work photos (three are parked in
-  `photos/work/`)
+  `photos/experience/`)
 
 ---
 

@@ -2,17 +2,34 @@
 import { site } from '../data/site';
 
 interface Props {
-  /** The command text after the `$`. */
+  /** The command text after the `$`, e.g. "cat experience.md". */
   cmd: string;
   /** Wrap the command in #typed so the script can type it out once. */
   typed?: boolean;
 }
 
 const { cmd, typed = false } = Astro.props;
+// "cat experience.md" -> the file or folder ("experience.md") is set in bold,
+// so each prompt line also reads as the section's title.
+const space = cmd.indexOf(' ');
+const verb = space === -1 ? cmd : cmd.slice(0, space);
+const target = space === -1 ? '' : cmd.slice(space + 1);
 ---
 
 <p class="cmd">
   <span class="u">{site.user}</span>:<span class="p">~</span>$ {
-    typed ? <span id="typed">{cmd}</span> : cmd
+    typed ? (
+      <span id="typed">{cmd}</span>
+    ) : (
+      <>
+        {verb}
+        {target && (
+          <>
+            {' '}
+            <span class="target">{target}</span>
+          </>
+        )}
+      </>
+    )
   }
 </p>
