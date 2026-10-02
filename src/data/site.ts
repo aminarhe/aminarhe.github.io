@@ -1,9 +1,9 @@
-// Every value here comes from reference/design-reference.html. Do not invent.
+// Site-wide text and links.
 
 export const site = {
   /** Browser tab, search results, and link previews. */
   title: 'Amina Rakhimbergenova',
-  /** Search-result snippet and link-preview text, in your own words from the intro. */
+  /** Search-result snippet and link-preview text. */
   description:
     'Software engineer building across AI/ML and robotics, from GPU clusters and LLM serving to robot learning and hardware.',
   host: 'aminarhe.me',
@@ -23,10 +23,7 @@ export const site = {
   linkedin: 'https://www.linkedin.com/in/aminarhe/' as string | null,
 } as const;
 
-/**
- * drives.txt, one string per paragraph. Write {email} where you want your
- * email address linked; it shows as the word "email".
- */
+/** drives.txt, one string per paragraph. `{email}` renders as a mailto link. */
 export const drives: string[] = [
   'I grew up in Kazakhstan, where you often have to build what you need yourself. It taught me that an individual or a small team can make a real difference, and it’s still how I work - if a problem frustrates me and I can do something about it, I do it.',
   'The problem I can’t stop thinking about is AI risk, and I want to work on it, in AI safety or adjacent to it.',

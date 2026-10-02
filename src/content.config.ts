@@ -6,7 +6,7 @@ const projects = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
   schema: z.object({
     title: z.string(),
-    /** Event / award / team size, exactly as Amina gives it. */
+    /** Event, award, or team size, shown under the title. */
     where: z.string().optional(),
     /** Position in the list. */
     order: z.number(),
@@ -19,11 +19,10 @@ const projects = defineCollection({
     photoDir: z.string().optional(),
     /**
      * Captions keyed by photo file name, e.g. `{ "01.jpg": "..." }`.
-     * Amina writes these; they are never generated.
      */
     captions: z.record(z.string(), z.string()).default({}),
     links: z
-      .array(z.object({ label: z.string(), url: z.string().url() }))
+      .array(z.object({ label: z.string(), url: z.url() }))
       .default([]),
     stack: z.array(z.string()).default([]),
   }),

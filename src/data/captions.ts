@@ -2,9 +2,8 @@
  * Photo captions for the hero strip and the cities.
  * (Project photo captions live in that project's markdown file.)
  *
- * These are YOURS — the drafts below were written from what is visible in each
- * photo, so edit or replace them freely. Set a caption to '' to show none.
  * Keys are file names inside photos/hero/ and photos/elsewhere/.
+ * An empty string or a missing key shows no caption.
  */
 
 export const heroCaptions: Record<string, string> = {

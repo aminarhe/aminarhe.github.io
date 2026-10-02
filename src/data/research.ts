@@ -1,4 +1,4 @@
-// Your words only. Do not invent. Newest first.
+// Research entries, rendered in order (newest first).
 
 export type ResearchEntry = {
   title: string;

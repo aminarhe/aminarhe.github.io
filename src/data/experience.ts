@@ -1,4 +1,4 @@
-// Every line here is copied from reference/design-reference.html. Do not invent.
+// Experience entries, rendered in order (newest first).
 
 export type Role = {
   /** Rendered as "### title" */
