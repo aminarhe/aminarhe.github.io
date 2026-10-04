@@ -25,7 +25,7 @@ export const site = {
 
 /** drives.txt, one string per paragraph. `{email}` renders as a mailto link. */
 export const drives: string[] = [
-  'I grew up in Kazakhstan, where you often have to build what you need yourself. It taught me that an individual or a small team can make a real difference, and it’s still how I work - if a problem frustrates me and I can do something about it, I do it.',
+  'I believe technology should be accessible, inclusive, and serve the goal of making the world a better place.',
   'The problem I can’t stop thinking about is AI risk, and I want to work on it, in AI safety or adjacent to it.',
   'I’m also into philosophy, history, and art for social change. Hot takes welcome by {email}.',
 ];
