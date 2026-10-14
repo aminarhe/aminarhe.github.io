@@ -7,7 +7,7 @@
  */
 
 export const heroCaptions: Record<string, string> = {
-  '01-lucid-datacenter.jpg': 'first time in data center',
+  '01-mathflower.png': 'newton fractal of z⁵ − 1',
   '02-trilo-pcb.jpg': 'a pcb, designed by me [rhyme!]',
   '03-sutro.png': 'Sutro baths, correct amount of cloud',
   '04-patagoniame.jpg': 'hiking in Patagonia'
